@@ -3,7 +3,7 @@ import { useState } from 'react'
 const App = () => {
   const [drankAmount, setDrankAmount] = useState(0)
   const [addAmount, setAddAmount] = useState(0)
-  const [userData, setUserData] = useState({ birthDate: new Date(), weight: 0 })
+  const [userData, setUserData] = useState({ birthDate: new Date(), weight: 0, phoneNumber: '' })
   const [registered, setRegistered] = useState(false)
   const shouldFormat = drankAmount >= 1000;
   const maxAmountDrank = 10000;
@@ -39,6 +39,12 @@ const App = () => {
             </>
             :
             <>
+              <p>Phone number</p>
+
+              <input value={userData.phoneNumber || ''} onChange={({ target }) => {
+                setUserData({ ...userData, phoneNumber: target.value })
+              }} />
+
               <p>Birth date</p>
 
               <input type='date' value={userData.birthDate.toLocaleDateString("lt-LT")} onChange={({ target }) => {
@@ -58,8 +64,13 @@ const App = () => {
                 setUserData({ ...userData, weight: +target.value })
               }} />
 
+
               <div>
                 <button onClick={() => {
+                  if (userData.phoneNumber.length < 6) {
+                    return alert('Phone number too short.')
+                  }
+
                   if (!userData.weight || !userData.birthDate) {
                     return alert('Please enter all fields.')
                   }
