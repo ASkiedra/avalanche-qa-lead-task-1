@@ -49,7 +49,7 @@ const App = () => {
                 <>
                   <p>Phone number</p>
 
-                  <input value={userData.phoneNumber || ''} onChange={({ target }) => {
+                  <input aria-label="phone-number-field" value={userData.phoneNumber || ''} onChange={({ target }) => {
                     setUserData({ ...userData, phoneNumber: target.value })
                   }} />
                 </>}
@@ -57,7 +57,7 @@ const App = () => {
 
               <p>Birth date</p>
 
-              <input type='date' value={userData.birthDate.toLocaleDateString("lt-LT")} onChange={({ target }) => {
+              <input aria-label="birth-date-field" type='date' value={userData.birthDate.toLocaleDateString("lt-LT")} onChange={({ target }) => {
                 if (new Date(target.value) > new Date()) {
                   return alert('Birth date cannot be in the future')
                 }
@@ -66,7 +66,7 @@ const App = () => {
 
               <p>Weight</p>
 
-              <input type='number' max={9999} min='0' value={userData.weight || ''} onChange={({ target }) => {
+              <input aria-label="weight-field" type='number' max={9999} min='0' value={userData.weight || ''} onChange={({ target }) => {
                 if (+target.value > 9999) {
                   return alert('Weight cannot exceed 9999')
                 }
@@ -89,6 +89,7 @@ const App = () => {
                     if (inSettings)
                       return setInSettings(false)
 
+                    localStorage.setItem('userData', JSON.stringify(userData))
                     setRegistered(true)
                   }}>{inSettings ? 'Save' : 'Register'}</button>
               </div>
