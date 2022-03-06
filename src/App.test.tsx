@@ -165,7 +165,7 @@ describe('App', () => {
   });
 
 
-  it('Unit test of convertion functionality', async () => {
+  it('Unit test of conversion functionality', async () => {
     localStorage.setItem('userData', JSON.stringify(userMock))
 
     const addAmount = 150;
@@ -187,17 +187,13 @@ describe('App', () => {
     const newAddAmount = 1000;
 
     await fireEvent.click(addAmountField);
-    userEvent.type(addAmountField, String(addAmount));
+    userEvent.type(addAmountField, String(newAddAmount));
 
     await fireEvent.click(addBtn);
 
     const newDrankAmount = screen.getByLabelText("drank-amount");
 
-    console.log(drankAmount.textContent);
-    console.log(newDrankAmount.textContent);
-    console.log(addAmount);
-    // expect(newDrankAmount.textContent).toBe((addAmount + newAddAmount / 1000).toFixed(1)) `l`);
-    expect(newDrankAmount.textContent).toBe(`${((addAmount + newAddAmount) / 1000).toFixed(1)} ml`)
+    expect(newDrankAmount.textContent).toBe(`${((addAmount + newAddAmount) / 1000).toFixed(1)} l`)
 
   })
 });
