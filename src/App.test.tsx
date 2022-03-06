@@ -165,4 +165,32 @@ describe('App', () => {
 
   });
 
-});
+
+  it(`Unit test of conversion functionality`, async () => {
+    localStorage.setItem(`userData`, JSON.stringify(userMock))
+
+    const addAmount = 150;
+
+    render(<App />);
+
+    const addAmountField = screen.getByLabelText(`add-amount-field`);
+    await fireEvent.click(addAmountField);
+    userEvent.type(addAmountField, String(addAmount));
+
+    const addBtn = screen.getByLabelText(`add-btn`);
+    await fireEvent.click(addBtn);
+
+
+    const drankAmount = screen.getByLabelText("drank-amount");
+
+    if (drankAmount < 1000) {
+      expect(drankAmount).toBe(drankAmount`ml`);
+    }
+    else if (drankAmount > 1000) {
+      expect(Number(drankAmount) > 1000).toBe(drankAmount`l`)
+    }
+
+
+    expect(drankAmount.textContent).toBe(`${addAmount} ml`);
+
+  });
