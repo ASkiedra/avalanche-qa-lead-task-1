@@ -4,7 +4,7 @@ const App = () => {
   const [drankAmount, setDrankAmount] = useState(0)
   const [addAmount, setAddAmount] = useState(0)
   const [userData, setUserData] = useState({ birthDate: new Date(), weight: 0, phoneNumber: '' })
-  const [registered, setRegistered] = useState(false)
+  const [registered, setRegistered] = useState(!!localStorage.getItem('userData'))
   const [inSettings, setInSettings] = useState(false)
   const shouldFormat = drankAmount >= 1000;
   const maxAmountDrank = 10000;
@@ -13,6 +13,7 @@ const App = () => {
   // bierthdat weight phone number reg
   // bierthdat weight sett
 
+  console.info(registered)
   return (
     <div className="App">
       <div style={{ fontSize: 26 }} className="centered">
@@ -21,7 +22,7 @@ const App = () => {
 
           {(registered && !inSettings) ?
             <>
-              <input type='number' min="0" style={{ padding: '1rem' }} value={addAmount || ''} onChange={({ target }) => setAddAmount(+target.value)} />
+              <input aria-label="add-amount-field" type='number' min="0" style={{ padding: '1rem' }} value={addAmount || ''} onChange={({ target }) => setAddAmount(+target.value)} />
 
               <button
                 aria-label='add-btn'
@@ -36,7 +37,7 @@ const App = () => {
                   setAddAmount(0)
                 }}>Add</button>
 
-              <p style={{ border: '3px solid cyan', padding: '0.5rem 0', width: '25rem', margin: '0 auto' }}>
+              <p aria-label="drank-amount" style={{ border: '3px solid cyan', padding: '0.5rem 0', width: '25rem', margin: '0 auto' }}>
                 {shouldFormat ? (drankAmount / 1000).toFixed(1) : drankAmount} {unit}
               </p>
 
@@ -79,17 +80,18 @@ const App = () => {
                   aria-label="settings-or-register-button"
                   onClick={() => {
                     if (!inSettings && userData.phoneNumber.length < 6) {
-                      return alert('Phone number too short.')
+                      return alert?.('Phone number too short.')
                     }
 
                     if (!userData.weight || !userData.birthDate) {
                       return alert('Please enter all fields.')
                     }
 
+                    localStorage.setItem('userData', JSON.stringify(userData))
+
                     if (inSettings)
                       return setInSettings(false)
 
-                    localStorage.setItem('userData', JSON.stringify(userData))
                     setRegistered(true)
                   }}>{inSettings ? 'Save' : 'Register'}</button>
               </div>
