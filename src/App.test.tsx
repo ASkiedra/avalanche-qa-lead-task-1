@@ -10,6 +10,11 @@ describe('App', () => {
     birthDate: new Date()
   }
 
+
+  const newWeight = 100; // settings overwrite test
+  const addAmount = 150; // hydration, conversion test
+  const drankAmountLabel = "drank-amount"; // conversion test
+
   afterEach(() => {
     localStorage.clear()
   })
@@ -145,7 +150,7 @@ describe('App', () => {
   it(`Unit test of settings overwrite functionality`, async () => {
     localStorage.setItem('userData', JSON.stringify(userMock))
 
-    const newWeight = 100;
+
 
     render(<App />);
 
@@ -168,11 +173,11 @@ describe('App', () => {
   it('Unit test of conversion functionality', async () => {
     localStorage.setItem('userData', JSON.stringify(userMock))
 
-    const addAmount = 150;
+
 
     render(<App />);
 
-    const addAmountField = screen.getByLabelText(`add-amount-field`);
+    const addAmountField = screen.getByLabelText("add-amount-field");
     await fireEvent.click(addAmountField);
     userEvent.type(addAmountField, String(addAmount));
 
@@ -180,7 +185,7 @@ describe('App', () => {
     await fireEvent.click(addBtn);
 
 
-    const drankAmount = screen.getByLabelText("drank-amount");
+    const drankAmount = screen.getByLabelText(drankAmountLabel);
 
     expect(drankAmount.textContent).toBe(`${addAmount} ml`)
 
@@ -191,9 +196,8 @@ describe('App', () => {
 
     await fireEvent.click(addBtn);
 
-    const newDrankAmount = screen.getByLabelText("drank-amount");
+    const newDrankAmount = screen.getByLabelText(drankAmountLabel);
 
     expect(newDrankAmount.textContent).toBe(`${((addAmount + newAddAmount) / 1000).toFixed(1)} l`)
-
   })
 });
